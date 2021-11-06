@@ -1,0 +1,125 @@
+project.ext {
+
+    // 模块是否单独运行调试
+    isModuleDebug = false
+
+    minSdkVersion = 21
+    targetSdkVersion = 30
+    versionCode = 1
+    versionName = "1.0"
+    compileSdkVersion = 30
+    applicationId = "com.hqk.gradledemo06"
+
+    libs = [
+            "appcompat"       : "androidx.appcompat:appcompat:1.2.0",
+            "k-stdlib"        : "org.jetbrains.kotlin:kotlin-stdlib:1.5.10",
+            "ktx"             : "androidx.core:core-ktx:1.3.1",
+            "material"        : "com.google.android.material:material:1.2.1",
+            "constraintlayout": "androidx.constraintlayout:constraintlayout:2.0.1",
+            "arouter"         : "com.alibaba:arouter-api:1.5.1"
+    ]
+
+    apts = [
+            "ARouterCompiler": "com.alibaba:arouter-compiler:1.5.1",
+    ]
+
+    // 专门用来设置application module的
+    setAppDefaultConfig = {
+        project ->
+            project.apply plugin: "com.android.application"
+            project.apply plugin: "kotlin-android"
+            setAndroidConfig project.android
+            setDependencies project.dependencies
+    }
+
+    setAndroidConfig = {
+        android ->
+            android.compileSdkVersion project.compileSdkVersion
+
+            android.defaultConfig {
+                minSdkVersion project.minSdkVersion
+                targetSdkVersion project.targetSdkVersion
+                versionCode project.versionCode
+                versionName project.versionName
+
+                if (project.name == 'app') {
+                    applicationId project.applicationId
+                } else if (project.isModuleDebug) {
+                    applicationId project.applicationId
+                    applicationIdSuffix = project.name
+                }
+
+                testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+                javaCompileOptions {
+                    annotationProcessorOptions {
+                        // 路由每个模块的名称
+                        arguments += [AROUTER_MODULE_NAME: project.name]
+                    }
+                }
+            }
+
+            android.buildTypes {
+                release {
+                    minifyEnabled false
+                    proguardFiles android.getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                }
+            }
+            android.compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
+            android.kotlinOptions {
+                jvmTarget = '1.8'
+            }
+
+            android.sourceSets {
+                main {
+                    if (project.name != 'app') {
+                        if (project.isModuleDebug) {
+                            manifest.srcFile "src/debug/AndroidManifest.xml"
+                        } else {
+                            manifest.srcFile "src/main/AndroidManifest.xml"
+                        }
+                    }
+                }
+            }
+    }
+
+    // 专门为library情况下进行配置
+    setLibDefalutConfig = {
+        project.apply plugin: "com.android.library"
+        project.apply plugin: "kotlin-android"
+        setAndroidConfig project.android
+        setDependencies project.dependencies
+    }
+
+    setDependencies = {
+        dependencies ->
+            delegate = dependencies
+            project.libs.each {
+                k, v -> implementation v
+            }
+            project.apts.each {
+                k, v -> annotationProcessor v
+            }
+            testImplementation 'junit:junit:4.+'
+            androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+            androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+            if (project.name == 'app' && !project.isModuleDebug) {
+                implementation project(':buissiness:login')
+                implementation project(':buissiness:main')
+            }
+    }
+
+}
+
+if (project.name == 'app' || isModuleDebug) {
+    // 除了app以外，还有组件调试的情况，就直接调用setAppDefaultConfig
+    project.setAppDefaultConfig project
+} else {
+    project.setLibDefalutConfig project
+}
+
+

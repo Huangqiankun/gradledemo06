@@ -1,0 +1,83 @@
+//plugins {
+//    id 'com.android.application'
+//    id 'kotlin-android'
+//}
+
+apply from: "${rootProject.rootDir}/common.gradle" // 这是一种脚本插件
+
+//project.android {
+//    compileSdkVersion 30
+//
+//    defaultConfig {
+//        applicationId "com.dongnaoedu.gradledemo06"
+//        minSdkVersion 28
+//        targetSdkVersion 30
+//        versionCode 1
+//        versionName "1.0"
+//
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//    }
+//
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+//    kotlinOptions {
+//        jvmTarget = '1.8'
+//    }
+//}
+
+//dependencies {
+//
+//    if (!project.isModuleDebug) {
+//        implementation project(':buissiness:main')
+//        //implementation project(':buissiness:login')
+//    }
+//
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    implementation 'androidx.core:core-ktx:1.3.1'
+//    implementation 'androidx.appcompat:appcompat:1.2.0'
+//    implementation 'com.google.android.material:material:1.2.1'
+//    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+//    testImplementation 'junit:junit:4.+'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+//}
+
+
+// 再谈闭包的方法和属性访问
+//class Person {
+//    String userName
+//    def age
+//
+//    void sayHello() {
+//        println "hello"
+//    }
+//}
+//
+//def persson(Closure closure) {
+//    Person person = new Person(userName: "zee", age: 18)
+//    closure.delegate = person
+//    closure.setResolveStrategy(Closure.DELEGATE_FIRST) // 设置闭包中访问方法或属性的一种策略
+//    closure()
+//}
+//
+//void sayHello() {
+//    println "you are bad girl"
+//}
+//
+//persson {
+//    println this
+//    println owner
+//    println delegate
+//    // ...
+//
+//    println userName
+//    sayHello()
+//}

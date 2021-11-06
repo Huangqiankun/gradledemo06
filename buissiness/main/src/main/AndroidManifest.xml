@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hqk.main">
+
+    <!--这是library情况下的AndroidManifest的配置-->
+    <application>
+        <activity android:name="com.hqk.main.MainActivity" />
+    </application>
+
+</manifest>

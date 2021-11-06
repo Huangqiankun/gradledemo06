@@ -1,0 +1,6 @@
+rootProject.name = "gradledemo06"
+include ':app'
+include ':buissiness:main'
+include ':core:common'
+include ':base:baseLib'
+include ':buissiness:login'

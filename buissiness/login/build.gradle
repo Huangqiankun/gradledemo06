@@ -1,0 +1,11 @@
+apply from: "${rootProject.rootDir}/common.gradle" // 这是一种脚本插件
+
+// 自己这个工程的处理就再次调用相关的这些闭包执行
+android {
+
+}
+
+dependencies {
+    println "login dependencies"
+    api project(':base:baseLib')
+}
